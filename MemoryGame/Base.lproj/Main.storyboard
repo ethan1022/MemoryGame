@@ -71,10 +71,16 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fmS-Du-Fhc">
-                                            <rect key="frame" x="10" y="40" width="300" height="400"/>
+                                            <rect key="frame" x="10" y="35" width="300" height="350"/>
                                             <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CvB-tw-qXP">
+                                                    <rect key="frame" x="94.5" y="28.5" width="111" height="31.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="wLm-42-FBy">
-                                                    <rect key="frame" x="30" y="130" width="240" height="240"/>
+                                                    <rect key="frame" x="30" y="80" width="240" height="240"/>
                                                     <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="240" id="pAw-yY-v2e"/>
@@ -129,16 +135,30 @@
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
+                                                <constraint firstItem="wLm-42-FBy" firstAttribute="top" secondItem="CvB-tw-qXP" secondAttribute="bottom" constant="20" id="07y-Ib-Lrb"/>
                                                 <constraint firstItem="wLm-42-FBy" firstAttribute="centerX" secondItem="fmS-Du-Fhc" secondAttribute="centerX" id="5TE-5M-FHu"/>
                                                 <constraint firstAttribute="width" constant="300" id="ELR-Jx-1QJ"/>
-                                                <constraint firstAttribute="height" constant="400" id="Ppz-lP-KZa"/>
+                                                <constraint firstAttribute="height" constant="350" id="Ppz-lP-KZa"/>
+                                                <constraint firstItem="CvB-tw-qXP" firstAttribute="centerX" secondItem="fmS-Du-Fhc" secondAttribute="centerX" id="Z7x-T0-cms"/>
                                                 <constraint firstAttribute="bottom" secondItem="wLm-42-FBy" secondAttribute="bottom" constant="30" id="wIz-IO-X6y"/>
                                             </constraints>
                                         </view>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yzW-x4-PPH">
+                                            <rect key="frame" x="123.5" y="414" width="73" height="36"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                            <state key="normal" title="I give up">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="onClickQuitButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NO9-Nu-vN9"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="yzW-x4-PPH" firstAttribute="centerX" secondItem="HtY-g1-KHv" secondAttribute="centerX" id="AVG-ZB-3an"/>
                                         <constraint firstItem="fmS-Du-Fhc" firstAttribute="centerX" secondItem="HtY-g1-KHv" secondAttribute="centerX" id="Gi0-VO-bXP"/>
-                                        <constraint firstItem="fmS-Du-Fhc" firstAttribute="centerY" secondItem="HtY-g1-KHv" secondAttribute="centerY" id="gGm-PL-v4E"/>
+                                        <constraint firstItem="fmS-Du-Fhc" firstAttribute="centerY" secondItem="HtY-g1-KHv" secondAttribute="centerY" constant="-30" id="gGm-PL-v4E"/>
+                                        <constraint firstAttribute="bottom" secondItem="yzW-x4-PPH" secondAttribute="bottom" constant="30" id="nxg-Nh-bl5"/>
                                     </constraints>
                                 </view>
                                 <blurEffect style="dark"/>
@@ -156,11 +176,12 @@
                     <connections>
                         <outlet property="cardCollectionView" destination="wLm-42-FBy" id="SOi-xR-G69"/>
                         <outlet property="contentView" destination="fmS-Du-Fhc" id="DSZ-IQ-s5s"/>
+                        <outlet property="timerLabel" destination="CvB-tw-qXP" id="PIL-zg-dHh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="140" y="133.5832083958021"/>
+            <point key="canvasLocation" x="138.75" y="132.5"/>
         </scene>
     </scenes>
 </document>

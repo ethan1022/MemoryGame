@@ -12,6 +12,9 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
 
     @IBOutlet weak private var contentView: UIView!
     @IBOutlet weak private var cardCollectionView: UICollectionView!
+    @IBOutlet weak private var timerLabel: UILabel!
+    private var timer = Timer()
+    private var seconds = 0
     
     let cellIdentifier = "CardCollectionViewCell"
     
@@ -29,12 +32,18 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         self.cardDataSource = self.cardDataSource.shuffled()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.runTimer()
+    }
+    
     // MARK: - Private Methods
     func allSolvedAlert() {
         let alertController = UIAlertController(title: "All tasks have been solved",
-                                                message: "Do you want to play again?", preferredStyle: .alert)
+                                                message: "Your Score is \(self.timerLabel.text ?? "") !\nDo you want to play again?", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
             self.taskSolvedCount = 0
+            self.seconds = 0
             self.cardDataSource = self.cardDataSource.shuffled()
             for element in 0..<17 {
                 let indexPath = IndexPath.init(item: element, section: 0)
@@ -42,6 +51,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
                 item?.isHidden = false
             }
             self.cardCollectionView.reloadData()
+            self.runTimer()
         }
         let cancelAction = UIAlertAction(title: "No, I don't want", style: .cancel, handler: { (action) in
             self.dismiss(animated: true, completion: nil)
@@ -49,6 +59,28 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         alertController.addAction(okAction)
         alertController.addAction(cancelAction)
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    @IBAction func onClickQuitButton(_ sender: Any) {
+        self.timer.invalidate()
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    // MARK: - Timer
+    func runTimer() {
+        self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimeString), userInfo: nil, repeats: true)
+    }
+    
+    func timeStringWithTimerInterval(_ time: TimeInterval) -> String {
+        let hours = Int(time) / 3600
+        let minutes = Int(time) / 60 % 60
+        let seconds = Int(time) % 60
+        return String(format: "%02i:%02i:%02i", hours, minutes, seconds)
+    }
+    
+    @objc func updateTimeString() {
+        self.seconds += 1
+        self.timerLabel.text = self.timeStringWithTimerInterval(TimeInterval(self.seconds))
     }
 
     // MARK: - UICollectionViewDataSource
@@ -80,6 +112,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
                     SecondCell.isHidden = true
                     collectionView.isUserInteractionEnabled = true
                     if self.taskSolvedCount == 8 {
+                        self.timer.invalidate()
                         self.allSolvedAlert()
                     }
                 }
