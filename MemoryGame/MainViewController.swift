@@ -24,6 +24,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
                                     "g", "g", "h", "h"]
     var selectedCardIndexArray: [Int] = []
     var taskSolvedCount: Int = 0
+    var totalRoundCount: Int = 0
     
     // MARK: - Life Cycle
     override func viewDidLoad() {
@@ -39,18 +40,26 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
     
     // MARK: - Private Methods
     func allSolvedAlert() {
-        let alertController = UIAlertController(title: "All tasks have been solved",
+        let alertController = UIAlertController(title: self.totalRoundScoreTransfer(),
                                                 message: "Your Score is \(self.timerLabel.text ?? "") !\nDo you want to play again?", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+            // Clean scores
             self.taskSolvedCount = 0
+            self.totalRoundCount = 0
             self.seconds = 0
+            
+            // Reset cards position
             self.cardDataSource = self.cardDataSource.shuffled()
+            
+            // Show all items
             for element in 0..<17 {
                 let indexPath = IndexPath.init(item: element, section: 0)
                 let item = self.cardCollectionView.cellForItem(at: indexPath)
                 item?.isHidden = false
             }
             self.cardCollectionView.reloadData()
+            
+            // Start game
             self.runTimer()
         }
         let cancelAction = UIAlertAction(title: "No, I don't want", style: .cancel, handler: { (action) in
@@ -59,6 +68,16 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         alertController.addAction(okAction)
         alertController.addAction(cancelAction)
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func totalRoundScoreTransfer() -> String {
+        if self.totalRoundCount <= 8 {
+            return "⭐️⭐️⭐️"
+        } else if self.totalRoundCount > 8 && self.totalRoundCount <= 12 {
+            return "⭐️⭐️"
+        } else {
+            return "⭐️"
+        }
     }
     
     @IBAction func onClickQuitButton(_ sender: Any) {
@@ -100,6 +119,7 @@ class MainViewController: UIViewController, UICollectionViewDataSource, UICollec
         self.selectedCardIndexArray.append(indexPath.row)
         cell.showCard(true)
         if self.selectedCardIndexArray.count == 2 {
+            self.totalRoundCount += 1
             let firstCard = self.cardDataSource[self.selectedCardIndexArray[0]]
             let secondCard = self.cardDataSource[self.selectedCardIndexArray[1]]
             let firstCell = collectionView.cellForItem(at: IndexPath.init(item: self.selectedCardIndexArray[0], section: 0))  as! CardCollectionViewCell
